@@ -1,0 +1,649 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PawnshopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Number" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="PassportID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employess">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MonthlyPayments">
+          <Key>
+            <PropertyRef Name="MonthlyPaymentID" />
+          </Key>
+          <Property Name="MonthlyPaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="DeadlineDate" Type="datetime" Nullable="false" />
+          <Property Name="ActualDate" Type="datetime" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="PaymentStatusTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Passports">
+          <Key>
+            <PropertyRef Name="PassportID" />
+          </Key>
+          <Property Name="PassportID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Series" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="Number" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentsStatusTypes">
+          <Key>
+            <PropertyRef Name="PaymentsStatusTypeID" />
+          </Key>
+          <Property Name="PaymentsStatusTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProductTypeID" Type="int" Nullable="false" />
+          <Property Name="DeliveryDate" Type="datetime" Nullable="false" />
+          <Property Name="AssessedCost" Type="float" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="DepositAmount" Type="float" Nullable="false" />
+          <Property Name="RansomAmount" Type="float" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductsSells">
+          <Key>
+            <PropertyRef Name="ProductSellID" />
+          </Key>
+          <Property Name="ProductSellID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="SellDate" Type="datetime" Nullable="false" />
+          <Property Name="EmployeeID" Type="int" Nullable="false" />
+          <Property Name="Cost" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductsTypes">
+          <Key>
+            <PropertyRef Name="ProductsTypeID" />
+          </Key>
+          <Property Name="ProductsTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Clients_Passports">
+          <End Role="Passports" Type="Self.Passports" Multiplicity="1" />
+          <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Passports">
+              <PropertyRef Name="PassportID" />
+            </Principal>
+            <Dependent Role="Clients">
+              <PropertyRef Name="PassportID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MonthlyPayments_Employess">
+          <End Role="Employess" Type="Self.Employess" Multiplicity="1" />
+          <End Role="MonthlyPayments" Type="Self.MonthlyPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employess">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="MonthlyPayments">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MonthlyPayments_PaymentsStatusTypes">
+          <End Role="PaymentsStatusTypes" Type="Self.PaymentsStatusTypes" Multiplicity="1" />
+          <End Role="MonthlyPayments" Type="Self.MonthlyPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentsStatusTypes">
+              <PropertyRef Name="PaymentsStatusTypeID" />
+            </Principal>
+            <Dependent Role="MonthlyPayments">
+              <PropertyRef Name="PaymentStatusTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MonthlyPayments_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="MonthlyPayments" Type="Self.MonthlyPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="MonthlyPayments">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Clients">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Employess">
+          <End Role="Employess" Type="Self.Employess" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employess">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductsTypes">
+          <End Role="ProductsTypes" Type="Self.ProductsTypes" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductsTypes">
+              <PropertyRef Name="ProductsTypeID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductsSells_Employess">
+          <End Role="Employess" Type="Self.Employess" Multiplicity="1" />
+          <End Role="ProductsSells" Type="Self.ProductsSells" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employess">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="ProductsSells">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductsSells_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductsSells" Type="Self.ProductsSells" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductsSells">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PawnshopModelStoreContainer">
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employess" EntityType="Self.Employess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MonthlyPayments" EntityType="Self.MonthlyPayments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Passports" EntityType="Self.Passports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentsStatusTypes" EntityType="Self.PaymentsStatusTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductsSells" EntityType="Self.ProductsSells" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductsTypes" EntityType="Self.ProductsTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Clients_Passports" Association="Self.FK_Clients_Passports">
+            <End Role="Passports" EntitySet="Passports" />
+            <End Role="Clients" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MonthlyPayments_Employess" Association="Self.FK_MonthlyPayments_Employess">
+            <End Role="Employess" EntitySet="Employess" />
+            <End Role="MonthlyPayments" EntitySet="MonthlyPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MonthlyPayments_PaymentsStatusTypes" Association="Self.FK_MonthlyPayments_PaymentsStatusTypes">
+            <End Role="PaymentsStatusTypes" EntitySet="PaymentsStatusTypes" />
+            <End Role="MonthlyPayments" EntitySet="MonthlyPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MonthlyPayments_Products" Association="Self.FK_MonthlyPayments_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="MonthlyPayments" EntitySet="MonthlyPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Clients" Association="Self.FK_Products_Clients">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Employess" Association="Self.FK_Products_Employess">
+            <End Role="Employess" EntitySet="Employess" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductsTypes" Association="Self.FK_Products_ProductsTypes">
+            <End Role="ProductsTypes" EntitySet="ProductsTypes" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductsSells_Employess" Association="Self.FK_ProductsSells_Employess">
+            <End Role="Employess" EntitySet="Employess" />
+            <End Role="ProductsSells" EntitySet="ProductsSells" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductsSells_Products" Association="Self.FK_ProductsSells_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductsSells" EntitySet="ProductsSells" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PawnshopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Number" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PassportID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Passports" Relationship="Self.FK_Clients_Passports" FromRole="Clients" ToRole="Passports" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_Clients" FromRole="Clients" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Employess">
+          <Key>
+            <PropertyRef Name="EmployeeID" />
+          </Key>
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MonthlyPayments" Relationship="Self.FK_MonthlyPayments_Employess" FromRole="Employess" ToRole="MonthlyPayments" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_Employess" FromRole="Employess" ToRole="Products" />
+          <NavigationProperty Name="ProductsSells" Relationship="Self.FK_ProductsSells_Employess" FromRole="Employess" ToRole="ProductsSells" />
+        </EntityType>
+        <EntityType Name="MonthlyPayments">
+          <Key>
+            <PropertyRef Name="MonthlyPaymentID" />
+          </Key>
+          <Property Name="MonthlyPaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="DeadlineDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ActualDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="PaymentStatusTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employess" Relationship="Self.FK_MonthlyPayments_Employess" FromRole="MonthlyPayments" ToRole="Employess" />
+          <NavigationProperty Name="PaymentsStatusTypes" Relationship="Self.FK_MonthlyPayments_PaymentsStatusTypes" FromRole="MonthlyPayments" ToRole="PaymentsStatusTypes" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_MonthlyPayments_Products" FromRole="MonthlyPayments" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Passports">
+          <Key>
+            <PropertyRef Name="PassportID" />
+          </Key>
+          <Property Name="PassportID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Series" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Number" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK_Clients_Passports" FromRole="Passports" ToRole="Clients" />
+        </EntityType>
+        <EntityType Name="PaymentsStatusTypes">
+          <Key>
+            <PropertyRef Name="PaymentsStatusTypeID" />
+          </Key>
+          <Property Name="PaymentsStatusTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="MonthlyPayments" Relationship="Self.FK_MonthlyPayments_PaymentsStatusTypes" FromRole="PaymentsStatusTypes" ToRole="MonthlyPayments" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductTypeID" Type="Int32" Nullable="false" />
+          <Property Name="DeliveryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AssessedCost" Type="Double" Nullable="false" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="DepositAmount" Type="Double" Nullable="false" />
+          <Property Name="RansomAmount" Type="Double" Nullable="false" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK_Products_Clients" FromRole="Products" ToRole="Clients" />
+          <NavigationProperty Name="Employess" Relationship="Self.FK_Products_Employess" FromRole="Products" ToRole="Employess" />
+          <NavigationProperty Name="MonthlyPayments" Relationship="Self.FK_MonthlyPayments_Products" FromRole="Products" ToRole="MonthlyPayments" />
+          <NavigationProperty Name="ProductsTypes" Relationship="Self.FK_Products_ProductsTypes" FromRole="Products" ToRole="ProductsTypes" />
+          <NavigationProperty Name="ProductsSells" Relationship="Self.FK_ProductsSells_Products" FromRole="Products" ToRole="ProductsSells" />
+        </EntityType>
+        <EntityType Name="ProductsSells">
+          <Key>
+            <PropertyRef Name="ProductSellID" />
+          </Key>
+          <Property Name="ProductSellID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="SellDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EmployeeID" Type="Int32" Nullable="false" />
+          <Property Name="Cost" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Employess" Relationship="Self.FK_ProductsSells_Employess" FromRole="ProductsSells" ToRole="Employess" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_ProductsSells_Products" FromRole="ProductsSells" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="ProductsTypes">
+          <Key>
+            <PropertyRef Name="ProductsTypeID" />
+          </Key>
+          <Property Name="ProductsTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_ProductsTypes" FromRole="ProductsTypes" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Clients_Passports">
+          <End Role="Passports" Type="Self.Passports" Multiplicity="1" />
+          <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Passports">
+              <PropertyRef Name="PassportID" />
+            </Principal>
+            <Dependent Role="Clients">
+              <PropertyRef Name="PassportID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Clients">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="ClientID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ClientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MonthlyPayments_Employess">
+          <End Role="Employess" Type="Self.Employess" Multiplicity="1" />
+          <End Role="MonthlyPayments" Type="Self.MonthlyPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employess">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="MonthlyPayments">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Employess">
+          <End Role="Employess" Type="Self.Employess" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employess">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductsSells_Employess">
+          <End Role="Employess" Type="Self.Employess" Multiplicity="1" />
+          <End Role="ProductsSells" Type="Self.ProductsSells" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employess">
+              <PropertyRef Name="EmployeeID" />
+            </Principal>
+            <Dependent Role="ProductsSells">
+              <PropertyRef Name="EmployeeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MonthlyPayments_PaymentsStatusTypes">
+          <End Role="PaymentsStatusTypes" Type="Self.PaymentsStatusTypes" Multiplicity="1" />
+          <End Role="MonthlyPayments" Type="Self.MonthlyPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentsStatusTypes">
+              <PropertyRef Name="PaymentsStatusTypeID" />
+            </Principal>
+            <Dependent Role="MonthlyPayments">
+              <PropertyRef Name="PaymentStatusTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MonthlyPayments_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="MonthlyPayments" Type="Self.MonthlyPayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="MonthlyPayments">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductsTypes">
+          <End Role="ProductsTypes" Type="Self.ProductsTypes" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductsTypes">
+              <PropertyRef Name="ProductsTypeID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductsSells_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductsSells" Type="Self.ProductsSells" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="ProductsSells">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PawnshopEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Self.Clients" />
+          <EntitySet Name="Employess" EntityType="Self.Employess" />
+          <EntitySet Name="MonthlyPayments" EntityType="Self.MonthlyPayments" />
+          <EntitySet Name="Passports" EntityType="Self.Passports" />
+          <EntitySet Name="PaymentsStatusTypes" EntityType="Self.PaymentsStatusTypes" />
+          <EntitySet Name="Products" EntityType="Self.Products" />
+          <EntitySet Name="ProductsSells" EntityType="Self.ProductsSells" />
+          <EntitySet Name="ProductsTypes" EntityType="Self.ProductsTypes" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Clients_Passports" Association="Self.FK_Clients_Passports">
+            <End Role="Passports" EntitySet="Passports" />
+            <End Role="Clients" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Clients" Association="Self.FK_Products_Clients">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MonthlyPayments_Employess" Association="Self.FK_MonthlyPayments_Employess">
+            <End Role="Employess" EntitySet="Employess" />
+            <End Role="MonthlyPayments" EntitySet="MonthlyPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Employess" Association="Self.FK_Products_Employess">
+            <End Role="Employess" EntitySet="Employess" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductsSells_Employess" Association="Self.FK_ProductsSells_Employess">
+            <End Role="Employess" EntitySet="Employess" />
+            <End Role="ProductsSells" EntitySet="ProductsSells" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MonthlyPayments_PaymentsStatusTypes" Association="Self.FK_MonthlyPayments_PaymentsStatusTypes">
+            <End Role="PaymentsStatusTypes" EntitySet="PaymentsStatusTypes" />
+            <End Role="MonthlyPayments" EntitySet="MonthlyPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MonthlyPayments_Products" Association="Self.FK_MonthlyPayments_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="MonthlyPayments" EntitySet="MonthlyPayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductsTypes" Association="Self.FK_Products_ProductsTypes">
+            <End Role="ProductsTypes" EntitySet="ProductsTypes" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductsSells_Products" Association="Self.FK_ProductsSells_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductsSells" EntitySet="ProductsSells" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PawnshopModelStoreContainer" CdmEntityContainer="PawnshopEntities">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="PawnshopModel.Clients">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="PassportID" ColumnName="PassportID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employess">
+            <EntityTypeMapping TypeName="PawnshopModel.Employess">
+              <MappingFragment StoreEntitySet="Employess">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MonthlyPayments">
+            <EntityTypeMapping TypeName="PawnshopModel.MonthlyPayments">
+              <MappingFragment StoreEntitySet="MonthlyPayments">
+                <ScalarProperty Name="MonthlyPaymentID" ColumnName="MonthlyPaymentID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DeadlineDate" ColumnName="DeadlineDate" />
+                <ScalarProperty Name="ActualDate" ColumnName="ActualDate" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="PaymentStatusTypeID" ColumnName="PaymentStatusTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Passports">
+            <EntityTypeMapping TypeName="PawnshopModel.Passports">
+              <MappingFragment StoreEntitySet="Passports">
+                <ScalarProperty Name="PassportID" ColumnName="PassportID" />
+                <ScalarProperty Name="Series" ColumnName="Series" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentsStatusTypes">
+            <EntityTypeMapping TypeName="PawnshopModel.PaymentsStatusTypes">
+              <MappingFragment StoreEntitySet="PaymentsStatusTypes">
+                <ScalarProperty Name="PaymentsStatusTypeID" ColumnName="PaymentsStatusTypeID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="PawnshopModel.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ProductTypeID" ColumnName="ProductTypeID" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="AssessedCost" ColumnName="AssessedCost" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="DepositAmount" ColumnName="DepositAmount" />
+                <ScalarProperty Name="RansomAmount" ColumnName="RansomAmount" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductsSells">
+            <EntityTypeMapping TypeName="PawnshopModel.ProductsSells">
+              <MappingFragment StoreEntitySet="ProductsSells">
+                <ScalarProperty Name="ProductSellID" ColumnName="ProductSellID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="SellDate" ColumnName="SellDate" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductsTypes">
+            <EntityTypeMapping TypeName="PawnshopModel.ProductsTypes">
+              <MappingFragment StoreEntitySet="ProductsTypes">
+                <ScalarProperty Name="ProductsTypeID" ColumnName="ProductsTypeID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="PawnshopModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
